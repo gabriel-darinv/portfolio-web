@@ -1,26 +1,37 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Link } from "react-router-dom";
+import Routes from './routes';
+
+import { ThemeProvider } from 'styled-components';
+import Switch from  'react-switch';
+import light from './styles/themes/light';
+import dark from './styles/themes/dark';
+import { SunIcon } from './components/NavBar/styles';
+import { MoonIcon } from './components/NavBar/styles';
+
+import GlobalStyle from './styles/global'
+import NavBar from './components/NavBar';
 
 function App() {
+  const [ theme, setTheme ] = useState(light);
+
+  const toggleTheme = () => {
+    setTheme(theme.title === 'light'? dark : light);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  <ThemeProvider theme={theme} >
+    <Router>
+      <NavBar>
+        <Link to="#" onClick={toggleTheme}>
+          { theme.title === 'light'? <MoonIcon /> : <SunIcon /> }
+        </Link>
+      </NavBar>
+      <Routes />
+    </Router>
+    <GlobalStyle />
+  </ThemeProvider>
+  )
 }
 
 export default App;
